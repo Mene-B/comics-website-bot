@@ -39,17 +39,24 @@ module.exports = {
             cover_year: interaction.options.getInteger("coveryear") || ""
         }
         const document = new JSDOM(await(await fetch(`https://metron.cloud/issue/search?series_name=${infos.series_name.split(" ").join("+")}&series_volume=${infos.series_volume}&series_type=&number=${infos.issue_number}&cover_year=${infos.cover_year}&cover_month=&cv_id=`)).text()).window.document;
-        const infosLink = "https://metron.cloud"+document.querySelector(".card-footer").querySelector("a").href;
+        const infosLink =(document.querySelector(".card-footer") !== null) ? "https://metron.cloud"+document.querySelector(".card-footer").querySelector("a").href : undefined;
+
+        if(infosLink === undefined){
+            return interaction.reply("Sorry but we can't find what you are looking for...")
+        }
+
         const newDocument = new JSDOM(await(await fetch(infosLink)).text()).window.document;
         const images = [];
         const urlElements = newDocument.querySelector(".column.is-one-quarter").querySelectorAll("img");
+
         urlElements.forEach(element => {
             images.push(element.src)
         });
         let currentImage = 1;
         const imagesNumber = images.length;
         if(imagesNumber === 1){
-            return interaction.reply(`This comic only has one cover :\n${images[0]}`);
+            await interaction.channel.send("This comic only has one cover.");
+            return interaction.reply(images[0]);
         }
 
         const buttons = [

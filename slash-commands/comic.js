@@ -64,14 +64,23 @@ module.exports = {
         const seriesName = issueInfosElement.find(element => {
             return element.textContent.startsWith("Series:")
         }).textContent.split("Series: ")[1];
+        
+
+        const storyArcs = (newDocument.querySelector(".column.is-one-fifth").querySelector(".content") !== null) ? "- "+Array.from(newDocument.querySelector(".column.is-one-fifth").querySelector(".content").querySelectorAll("li")).map(element => {
+            return element.textContent;
+        }).join("\n- ") : "None";
+
 
         const embed = new EmbedBuilder()
         .setAuthor({name: cardTitle})
         .setThumbnail(imageURL)
-        .setDescription(`**Rating :** ${rating}
+        .setDescription(
+        `**Rating :** ${rating}
         **UPC :** ${UPC}
         **Cover date :** ${coverDate}
         **Series name :** ${seriesName}
+        **Story acts :**
+        ${storyArcs}\n
         **Summary :**
         ${summary}`)
         .setColor("Blurple")

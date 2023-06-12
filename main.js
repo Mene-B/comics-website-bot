@@ -28,22 +28,3 @@ client.on("interactionCreate", (interaction)=> {
         command.run(interaction);
     }
 })
-
-
-async function test(){
-    const res = await fetch("https://metron.cloud/");
-    const html = await res.text();
-    const document = new JSDOM(html).window.document;
-    const cards = document.querySelectorAll(".card");
-    const cardsArray = Array.from(cards);
-    cardsArray.forEach((cardDiv) => {
-        const text = cardDiv.querySelector('.card-header-title').textContent;
-        console.log(text);
-    })
-    console.log(cards[0]);
-    console.log(cardsArray);
-
-    return;
-}
-
-test();
