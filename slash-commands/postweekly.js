@@ -21,11 +21,12 @@ module.exports = {
                 return;
             });
         };
+        const title = new JSDOM(await(await fetch(url(1))).text()).window.document.querySelector("h1.title").textContent.trim();
         const pages = pagesBuilder(titles);
         const pagesNumber = pages.length;
         const pagesEmbed = pages.map((page,index)=>{
             return new EmbedBuilder()
-            .setAuthor({name: "Post Weekly Releases !"})
+            .setAuthor({name: title})
             .setThumbnail("https://i.goopics.net/jevyo7.png")
             .setDescription(page.join("\n\n"))
             .setColor("Navy")
