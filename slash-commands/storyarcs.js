@@ -13,18 +13,11 @@ module.exports = {
         .setRequired(true)
     }),
     run : async function(interaction){
-        let arcNameURL = [];
-        const arcName = interaction.options.getString("arcname").split("").filter((char)=>{
-            return (char !== "." && char !== ":" && char !== "+" && char !== "=" && char!== "-");
-        }).join("").toLowerCase().split(" ").join("-");
-        arcName.split("").forEach((element, index) => {
-            if((element === "-" && arcName[index-1] !== "-") || element !== "-"){
-                arcNameURL.push(element);
-            }
-        });
-        console.log(arcNameURL.join(""));
 
-        const document = new JSDOM(await (await fetch('https://metron.cloud/arc/search?q='+arcNameURL.join(""))).text()).window.document;
+        const arcName = encodeURIComponent(interaction.options.getString("arcname"));
+
+
+        const document = new JSDOM(await (await fetch('https://metron.cloud/arc/search?q='+arcName)).text()).window.document;
 
         if(document.querySelector(".card") === null){
             return interaction.reply("Sorry but we can't find what you are looking for...")
